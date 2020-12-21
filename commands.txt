@@ -1,0 +1,7 @@
+python label_image.py --graph=logs/output_graph.pb --input_layer=Placeholder --output_layer="final_result" --labels=logs/labels.txt --image=me.jpg
+
+python retrain_2017.py --image_dir=../datasets/faces2/ --output_graph=../graphs/graph_4.pb --output_labels=../graphs/labels_4.txt --saved_model_dir=saved_model/saved_model.pb --how_many_training_steps=300
+
+python optimize_for_inference.py --input=../graphs/graph.pb --output=../graphs/optimized_graph_4.pb --frozen_graph=True --input_names="Mul" --output_names="final_result"
+
+python quantize_graph.py --input=logs/optimized_graph.pb --output=logs/rounded_graph.pb --input_node_names="Mul" --output_node_names="final_result" --mode=weights_rounded
